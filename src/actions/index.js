@@ -1,63 +1,61 @@
+
+import fetch from 'isomorphic-fetch'
 import actionTypes from '../constants/actionTypes'
-
-export function addItem(item) {
+const {SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT, REQUEST_POSTS, RECEIVE_POSTS} = actionTypes
+export function selectSubreddit(subreddit) {
     return {
-        type: actionTypes.ADD_ITEM,
-        value: item
+        type: SELECT_SUBREDDIT,
+        subreddit
     }
 }
 
-
-export function deleteItem(index) {
+export function invalidateSubreddit(subreddit) {
     return {
-        type: actionTypes.DELETE_ITEM,
-        index: index
+        type: INVALIDATE_SUBREDDIT,
+        subreddit
     }
 }
 
-
-export function updateItem(id, text) {
+function requestPosts(subreddit) {
     return {
-        type: actionTypes.UPDATE_ITEM,
-        index: id,
-        newValue: text
+        type: REQUEST_POSTS,
+        subreddit
     }
 }
 
-
-export function changeEditState(index, isEditing) {
+function receivePosts(subreddit, json) {
     return {
-        type: actionTypes.CHANGE_EDIT_STATE,
-        index: index,
-        isEditing: isEditing
+        type: RECEIVE_POSTS,
+        subreddit,
+        posts: json.data.children.map(child => child.data),
+        receivedAt: Date.now()
     }
 }
 
-export function changeCompletedState(index, isCompleted) {
-    return {
-        type: actionTypes.CURRENT_COMPLETED_STATE,
-        index,
-        isCompleted
+function fetchPosts(subreddit) {
+    return dispatch => {
+        dispatch(requestPosts(subreddit))
+        return fetch(`http://www.subreddit.com/r/${subreddit}.json`)
+            .then(response => response.json())
+            .then(json => dispatch(receivePosts(subreddit, json)))
     }
 }
 
-export function setAllChecked(isCompleted) {
-    return {
-        type: actionTypes.SET_ALL_CHECKED,
-        isCompleted
+function shouldFetchPosts(state, subreddit) {
+    const posts = state.postsBySubreddit[subreddit]
+    if (!posts) {
+        return true
+    } else if (posts.isFetching) {
+        return false
+    } else {
+        return posts.didInvalidate
     }
 }
 
-export function allComplete(items) {
-    return {
-        type: actionTypes.ALL_COMPLETE,
-        items
-    }
-}
-
-export function destroyCompleted(indexAsArray) {
-    return {
-        type: actionTypes.DESTORY_COMPLETED,
-        indexAsArray
+export function fetchPostsIfNeeded(subreddit) {
+    return (dispatch, getState) => {
+        if (shouldFetchPosts(getState(), subreddit)) {
+            return dispatch(fetchPosts(subreddit))
+        }
     }
 }

@@ -1,9 +1,11 @@
 import {combineReducers} from 'redux'
-import items from './items'
+import postsBySubreddit from './postsBySubreddit'
+import selectedSubreddit from './selectedSubreddit'
 
 
 const rootReducer = combineReducers({
-    items
+    postsBySubreddit,
+    selectedSubreddit
 })
 
 export default rootReducer
