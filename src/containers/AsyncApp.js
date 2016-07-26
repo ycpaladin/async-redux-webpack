@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit } from '../actions'
+import { selectSubreddit , fetchPostsIfNeeded, invalidateSubreddit } from '../actions'
 import Picker from '../compoments/Picker'
 import Posts from '../compoments/Posts'
 
@@ -35,23 +35,23 @@ class AsyncApp extends Component {
     dispatch(fetchPostsIfNeeded(selectedSubreddit))
   }
 
-  render () {
+  render() {
     const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
     return (
       <div>
         <Picker value={selectedSubreddit}
-                onChange={this.handleChange}
-                options={[ 'reactjs', 'frontend','politics' ]} />
+          onChange={this.handleChange}
+          options={['reactjs', 'frontend', 'politics']} />
         <p>
           {lastUpdated &&
             <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
+              Last updated at {new Date(lastUpdated).toLocaleTimeString() }.
               {' '}
             </span>
           }
           {!isFetching &&
             <a href='#'
-               onClick={this.handleRefreshClick}>
+              onClick={this.handleRefreshClick}>
               Refresh
             </a>
           }
