@@ -1,0 +1,37 @@
+{
+  "name": "todo-redux",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "async-each": "^1.0.0",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "bootstrap": "^3.3.6",
+    "classnames": "^2.2.5",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "image-loader": "0.0.1",
+    "immutable": "^3.8.1",
+    "path": "^0.12.7",
+    "react": "^0.14.6",
+    "react-bootstrap": "^0.30.0-rc.1",
+    "react-dom": "^0.14.6",
+    "react-redux": "^4.0.6",
+    "redux": "^3.0.5",
+    "redux-thunk": "^2.1.0",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.10"
+  },
+  "scripts": {
+    "build": "webpack --progress -colors --watch"
+  },
+  "author": "lewis617",
+  "license": "ISC"
+}
