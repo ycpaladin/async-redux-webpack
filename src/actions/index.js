@@ -1,7 +1,7 @@
 
 import fetch from 'isomorphic-fetch'
 import actionTypes from '../constants/actionTypes'
-const {SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT, REQUEST_POSTS, RECEIVE_POSTS} = actionTypes
+const {SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT, REQUEST_POSTS, RECEIVE_POSTS,FAILURE_POSTS} = actionTypes
 export function selectSubreddit(subreddit) {
     return {
         type: SELECT_SUBREDDIT,
@@ -16,29 +16,37 @@ export function invalidateSubreddit(subreddit) {
     }
 }
 
-function requestPosts(subreddit) {
-    return {
-        type: REQUEST_POSTS,
-        subreddit
-    }
-}
+// function requestPosts(subreddit) {
+//     return {
+//         type: REQUEST_POSTS,
+//         subreddit
+//     }
+// }
 
-function receivePosts(subreddit, json) {
-    return {
-        type: RECEIVE_POSTS,
-        subreddit,
-        posts: json.data.children.map(child => child.data),
-        receivedAt: Date.now()
-    }
-}
+// function receivePosts(subreddit, json) {
+//     return {
+//         type: RECEIVE_POSTS,
+//         subreddit,
+//         posts: json.data.children.map(child => child.data),
+//         receivedAt: Date.now()
+//     }
+// }
 
 function fetchPosts(subreddit) {
-    return dispatch => {
-        dispatch(requestPosts(subreddit))
-        return fetch(`http://www.subreddit.com/r/${subreddit}.json`)
-            .then(response => response.json())
-            .then(json => dispatch(receivePosts(subreddit, json)))
+    // return dispatch => {
+    //     dispatch(requestPosts(subreddit))
+    //     return fetch(`http://www.subreddit.com/r/${subreddit}.json`)
+    //         .then(response => response.json())
+    //         .then(json => dispatch(receivePosts(subreddit, json)))
+    // }
+
+
+    return {
+        types: [REQUEST_POSTS, RECEIVE_POSTS, FAILURE_POSTS],
+        callAPI: () => fetch(`http://www.subreddit.com/r/${subreddit}.json`),
+        subreddit: { subreddit }
     }
+
 }
 
 function shouldFetchPosts(state, subreddit) {

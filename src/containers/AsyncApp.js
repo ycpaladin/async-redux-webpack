@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectSubreddit , fetchPostsIfNeeded, invalidateSubreddit } from '../actions'
+import { selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit } from '../actions'
 import Picker from '../compoments/Picker'
 import Posts from '../compoments/Posts'
 
@@ -36,7 +36,7 @@ class AsyncApp extends Component {
   }
 
   render() {
-    const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
+    const { selectedSubreddit, posts, isFetching, lastUpdated, errorMessage } = this.props
     return (
       <div>
         <Picker value={selectedSubreddit}
@@ -54,6 +54,9 @@ class AsyncApp extends Component {
               onClick={this.handleRefreshClick}>
               Refresh
             </a>
+          }
+          {
+            errorMessage
           }
         </p>
         {isFetching && posts.length === 0 &&
@@ -85,7 +88,8 @@ function mapStateToProps(state) {
   const {
     isFetching,
     lastUpdated,
-    items: posts
+    items: posts,
+    errorMessage
   } = postsBySubreddit[selectedSubreddit] || {
     isFetching: true,
     items: []
@@ -94,6 +98,7 @@ function mapStateToProps(state) {
   return {
     selectedSubreddit,
     posts,
+    errorMessage,
     isFetching,
     lastUpdated
   }
